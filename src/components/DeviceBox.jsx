@@ -13,15 +13,17 @@ import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import EmojiObjectsOutlinedIcon from "@mui/icons-material/EmojiObjectsOutlined";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 
-const DeviceBox = (device, index) => {
+const DeviceBox = ({ device, index }) => {
   const theme = useTheme();
   const smScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const colors = tokens(theme.palette.mode);
 
+  // console.log(device);
+
   return (
     <>
       <Box
-        // key={`${device}-${index}`}
+        key={`${device}-${index}`}
         display="flex"
         justifyContent="space-between"
         alignItems="center"
@@ -34,7 +36,7 @@ const DeviceBox = (device, index) => {
         </Box>
         <Box>
           {/* Render device information here */}
-          {/* <Typography color={colors.grey[100]}>{device.name}</Typography> */}
+          <Typography color={colors.grey[100]}>{device.name}</Typography>
         </Box>
         <Box
           color={colors.greenAccent[500]}

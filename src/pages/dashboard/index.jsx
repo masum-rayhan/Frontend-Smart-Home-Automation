@@ -21,6 +21,7 @@ import EmojiObjectsOutlinedIcon from "@mui/icons-material/EmojiObjectsOutlined";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import StateBox from "../../components/StateBox";
 import DeviceBox from "../../components/DeviceBox";
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -41,7 +42,7 @@ const Dashboard = () => {
     return <div>Loading...</div>;
   }
 
-  console.log(data.result);
+  // console.log(data.result);
 
   // const handleToggle = (index) => {
   //   // Step 3: Update the state of the specific device
@@ -51,6 +52,23 @@ const Dashboard = () => {
 
   //   console.log("toggle");
   // };
+
+  const buttonStyle = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottom: `4px solid ${colors.primary[500]}`,
+    color: `${colors.grey[100]}`, // Text color
+    padding: "15px 0", // Adjusted padding
+    width: "100%",
+    cursor: "pointer",
+    transition: "background-color 0.3s",
+    backgroundColor: `${colors.primary[400]}`, // Maintain color on hover
+    "&:hover": {
+      backgroundColor: `${colors.blueAccent[700]}`, // Maintain color on hover
+    },
+  };
+
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -292,13 +310,25 @@ const Dashboard = () => {
               </Typography>
             </Box>
             {data.result.map((device, index) => (
-              <DeviceBox 
-              key = {`${device.id}-${index}`}
-              device={device}
-              index={index}
-              // handleToggle={handleToggle}
+              <DeviceBox
+                key={`${device.id}-${index}`}
+                device={device}
+                index={index}
+                // handleToggle={handleToggle}
               />
             ))}
+          </Box>
+          <Box>
+            <Button sx={buttonStyle}>
+              <Typography
+                variant="h5"
+                fontWeight="600"
+                color={colors.grey[100]}
+              >
+                <AddBoxIcon />
+                {/* Create Device */}
+              </Typography>
+            </Button>
           </Box>
         </Grid>
       </Grid>
