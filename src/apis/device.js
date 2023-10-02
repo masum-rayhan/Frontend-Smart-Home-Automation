@@ -16,5 +16,5 @@ const deviceApi = createApi({
   }),
 });
 
-export const { useDevicesQuery} = deviceApi;
+export const { useGetDevicesQuery} = deviceApi;
 export default deviceApi;
