@@ -20,6 +20,7 @@ import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import EmojiObjectsOutlinedIcon from "@mui/icons-material/EmojiObjectsOutlined";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import StateBox from "../../components/StateBox";
+import DeviceBox from "../../components/DeviceBox";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -30,13 +31,17 @@ const Dashboard = () => {
   // const [isDeviceOn, setIsDeviceOn] = useState(false);
   // const [deviceStates, setDeviceStates] = useState(false);
 
-  // useEffect(() => {
-  //   if (!isLoading) {
-  //     dispatch(setDevice(data.result));
-  //   }
-  // }, [isLoading]);
+  useEffect(() => {
+    if (!isLoading) {
+      dispatch(setDevice(data.result));
+    }
+  }, [isLoading]);
 
-  // console.log(data.result);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  console.log(data.result);
 
   // const handleToggle = (index) => {
   //   // Step 3: Update the state of the specific device
@@ -46,11 +51,6 @@ const Dashboard = () => {
 
   //   console.log("toggle");
   // };
-
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
-
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -291,35 +291,14 @@ const Dashboard = () => {
                 Devices
               </Typography>
             </Box>
-            <Box
-              // key={`${device}-${index}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
-            >
-              <Box
-                color={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-              >
-                <EmojiObjectsOutlinedIcon style={{ fontSize: "45px" }} />
-                <EmojiObjectsIcon style={{ fontSize: "45px" }} />
-              </Box>
-              <Box>
-                {/* <Typography color={colors.grey[100]}>{device.name}</Typography> */}
-              </Box>
-              <Box
-                color={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-                onClick={() => handleToggle(index)}
-              >
-                <ToggleOnIcon color="primary" style={{ fontSize: "45px" }} />
-                <ToggleOffIcon color="disabled" style={{ fontSize: "45px" }} />
-              </Box>
-            </Box>
+            {data.result.map((device, index) => (
+              <DeviceBox 
+              key = {`${device.id}-${index}`}
+              device={device}
+              index={index}
+              // handleToggle={handleToggle}
+              />
+            ))}
           </Box>
         </Grid>
       </Grid>
