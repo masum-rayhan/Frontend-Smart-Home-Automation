@@ -5,6 +5,9 @@ import {
   Typography,
   useTheme,
   useMediaQuery,
+  Dialog,
+  DialogTitle,
+  DialogContent,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { tokens } from "../../theme";
@@ -21,7 +24,8 @@ import EmojiObjectsOutlinedIcon from "@mui/icons-material/EmojiObjectsOutlined";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import StateBox from "../../components/StateBox";
 import DeviceBox from "../../components/DeviceBox";
-import AddBoxIcon from '@mui/icons-material/AddBox';
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import CreateDeviceModal from "../../components/modal/CreateDeviceModal";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -29,6 +33,7 @@ const Dashboard = () => {
   const colors = tokens(theme.palette.mode);
   const { data, isLoading } = useGetDevicesQuery();
   const dispatch = useDispatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   // const [isDeviceOn, setIsDeviceOn] = useState(false);
   // const [deviceStates, setDeviceStates] = useState(false);
 
@@ -41,6 +46,16 @@ const Dashboard = () => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+  const handleCreateDevice = (formData) => {
+    setIsModalOpen(false);
+  };
 
   // console.log(data.result);
 
@@ -319,16 +334,22 @@ const Dashboard = () => {
             ))}
           </Box>
           <Box>
-            <Button sx={buttonStyle}>
+            <Button sx={buttonStyle} onClick={handleOpenModal}>
+              <AddBoxIcon />
               <Typography
                 variant="h5"
                 fontWeight="600"
                 color={colors.grey[100]}
               >
-                <AddBoxIcon />
-                {/* Create Device */}
+                Create Device
               </Typography>
             </Button>
+            {/* Create Device Modal */}
+            <CreateDeviceModal
+              open={isModalOpen}
+              onClose={handleCloseModal}
+              onCreate={handleCreateDevice}
+            />
           </Box>
         </Grid>
       </Grid>
