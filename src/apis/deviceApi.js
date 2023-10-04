@@ -13,8 +13,20 @@ const deviceApi = createApi({
       }),
       providesTags: ["Devices"],
     }),
+
+    createDevice: builder.mutation({
+      query: (fromData) => ({
+        url: `device`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: fromData,
+      }),
+      invalidatesTags: ["Devices"],
+    }),
   }),
 });
 
-export const { useGetDevicesQuery} = deviceApi;
+export const { useGetDevicesQuery,useCreateDeviceMutation } = deviceApi;
 export default deviceApi;

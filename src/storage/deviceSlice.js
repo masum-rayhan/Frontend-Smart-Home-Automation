@@ -10,9 +10,12 @@ export const deviceSlice = createSlice({
     reducers: {
         setDevice: (state, action) => {
             state.device = action.payload;
-        }
+        },
+        addDevice: (state, action) => {
+            state.device.push(action.payload);
+        },
     },
 });
 
-export const { setDevice } = deviceSlice.actions;
+export const { setDevice, addDevice } = deviceSlice.actions;
 export const deviceReducer = deviceSlice.reducer;

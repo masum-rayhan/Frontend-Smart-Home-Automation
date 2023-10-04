@@ -14,10 +14,13 @@ import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import Header from "../../components/Header";
-import { useGetDevicesQuery } from "../../apis/device";
+import {
+  useCreateDeviceMutation,
+  useGetDevicesQuery,
+} from "../../apis/deviceApi";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { setDevice } from "../../storage/deviceSlice";
+import { addDevice, setDevice } from "../../storage/deviceSlice";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import EmojiObjectsOutlinedIcon from "@mui/icons-material/EmojiObjectsOutlined";
@@ -34,8 +37,6 @@ const Dashboard = () => {
   const { data, isLoading } = useGetDevicesQuery();
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [isDeviceOn, setIsDeviceOn] = useState(false);
-  // const [deviceStates, setDeviceStates] = useState(false);
 
   useEffect(() => {
     if (!isLoading) {
@@ -50,23 +51,10 @@ const Dashboard = () => {
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-  const handleCreateDevice = (formData) => {
-    setIsModalOpen(false);
-  };
-
-  // console.log(data.result);
-
-  // const handleToggle = (index) => {
-  //   // Step 3: Update the state of the specific device
-  //   const newDeviceStates = [...deviceStates];
-  //   newDeviceStates[index] = !newDeviceStates[index];
-  //   setDeviceStates(newDeviceStates);
-
-  //   console.log("toggle");
-  // };
 
   const buttonStyle = {
     display: "flex",
@@ -345,11 +333,11 @@ const Dashboard = () => {
               </Typography>
             </Button>
             {/* Create Device Modal */}
-            <CreateDeviceModal
+            {/* <CreateDeviceModal
               open={isModalOpen}
               onClose={handleCloseModal}
-              onCreate={handleCreateDevice}
-            />
+            /> */}
+            <CreateDeviceModal open={isModalOpen} onClose={handleCloseModal} />
           </Box>
         </Grid>
       </Grid>

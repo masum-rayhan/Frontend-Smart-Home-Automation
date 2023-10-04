@@ -11,8 +11,9 @@ import {
 import CloseIcon from "@mui/icons-material/Close"; // Import CloseIcon
 import { tokens } from "../../theme";
 import { useTheme } from "@emotion/react";
+import { useCreateDeviceMutation } from "../../apis/deviceApi";
 
-const CreateDeviceModal = ({ open, onClose, onCreate }) => {
+const CreateDeviceModal = ({ open, onClose }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -27,9 +28,25 @@ const CreateDeviceModal = ({ open, onClose, onCreate }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = () => {
-    onCreate(formData);
-    onClose(); // Close the modal after creating the device
+  const [createDevice, { isLoading, isError }] = useCreateDeviceMutation();
+  const handleCreateDevice = async () => {
+    // Check if required fields are not empty
+    if (!formData.name || !formData.deviceType || !formData.location) {
+      console.error("Required fields are empty");
+      return;
+    }
+    try {
+      const response = await createDevice(formData); // Call the mutation with form data
+      if (!response.error) {
+        // Check if there is no error
+        onClose(); // Close the modal
+      }
+      else {
+        console.error("Error creating device:", response.error);
+      }
+    } catch (error) {
+      console.error("Error creating device:", error);
+    }
   };
 
   return (
@@ -76,8 +93,13 @@ const CreateDeviceModal = ({ open, onClose, onCreate }) => {
           value={formData.location}
           onChange={handleChange}
         />
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Create
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleCreateDevice} // Call the handleCreateDevice function on button click
+          disabled={isLoading} // Disable the button while the mutation is in progress
+        >
+          {isLoading ? "Creating..." : "Create"}
         </Button>
       </DialogContent>
     </Dialog>
