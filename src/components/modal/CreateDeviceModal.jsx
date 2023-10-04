@@ -38,6 +38,15 @@ const CreateDeviceModal = ({ open, onClose }) => {
     location: "",
   });
 
+  // Function to reset the form fields
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      deviceType: "",
+      location: "",
+    });
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -47,20 +56,21 @@ const CreateDeviceModal = ({ open, onClose }) => {
   const handleCreateDevice = async () => {
     // Check if required fields are not empty
     if (!formData.name || !formData.deviceType || !formData.location) {
-      console.error("Required fields are empty");
-      return;
+      const errorMessage = "Device Name and Device Type are required.";
+      handleSnackbarOpen(errorMessage, "error");      return;
     }
     try {
       const response = await createDevice(formData); // Call the mutation with form data
       if (!response.error) {
         handleSnackbarOpen("Device created successfully", "success");
+        resetForm(); // Reset the form fields
         onClose(); // Close the modal
       } else {
-        console.error("Error creating device:", response.error);
-      }
+        const errorMessage = `Error creating device: ${response.error}`;
+        handleSnackbarOpen(errorMessage, "error");      }
     } catch (error) {
-      console.error("Error creating device:", error);
-    }
+      const errorMessage = `Error creating device: ${error.message}`;
+      handleSnackbarOpen(errorMessage, "error");    }
   };
 
   return (
@@ -89,6 +99,7 @@ const CreateDeviceModal = ({ open, onClose }) => {
             margin="normal"
             value={formData.name}
             onChange={handleChange}
+            required 
           />
           <TextField
             name="deviceType"
@@ -98,6 +109,7 @@ const CreateDeviceModal = ({ open, onClose }) => {
             margin="normal"
             value={formData.deviceType}
             onChange={handleChange}
+            required 
           />
           <TextField
             name="location"
