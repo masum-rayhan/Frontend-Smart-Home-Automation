@@ -6,7 +6,7 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { tokens } from "../theme";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
@@ -18,6 +18,16 @@ const DeviceBox = ({ device, index }) => {
   const smScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const colors = tokens(theme.palette.mode);
 
+  // Initialize state for the device's on/off status
+  const [isDeviceOn, setIsDeviceOn] = useState(false);
+  const [deviceType, setDeviceType] = useState("outline");
+   // Toggle the device's status when the button is clicked
+   const handleToggle = () => {
+    setIsDeviceOn((prevIsDeviceOn) => !prevIsDeviceOn);
+    setDeviceType((prevDeviceType) => 
+      prevDeviceType === "outline" ? "filled" : "outline"
+    );
+  };
   // console.log(device);
 
   return (
@@ -31,8 +41,13 @@ const DeviceBox = ({ device, index }) => {
         p="15px"
       >
         <Box color={colors.greenAccent[500]} p="5px 10px" borderRadius="4px">
-          <EmojiObjectsOutlinedIcon style={{ fontSize: "45px" }} />
-          <EmojiObjectsIcon style={{ fontSize: "45px" }} />
+          {/* <EmojiObjectsOutlinedIcon style={{ fontSize: "45px" }} />
+          <EmojiObjectsIcon style={{ fontSize: "45px" }} /> */}
+          {deviceType === "outline" ? (
+            <EmojiObjectsOutlinedIcon style={{ fontSize: "45px" }} />
+          ) : (
+            <EmojiObjectsIcon style={{ fontSize: "45px" }} />
+          )}
         </Box>
         <Box>
           {/* Render device information here */}
@@ -42,10 +57,15 @@ const DeviceBox = ({ device, index }) => {
           color={colors.greenAccent[500]}
           p="5px 10px"
           borderRadius="4px"
-          // onClick={() => handleToggle(index)}
+          onClick={ handleToggle }
         >
-          <ToggleOnIcon color="primary" style={{ fontSize: "45px" }} />
-          <ToggleOffIcon color="disabled" style={{ fontSize: "45px" }} />
+          {/* <ToggleOnIcon color="primary" style={{ fontSize: "45px" }} />
+          <ToggleOffIcon color="disabled" style={{ fontSize: "45px" }} /> */}
+          {isDeviceOn ? (
+            <ToggleOnIcon color="primary" style={{ fontSize: "45px" }} />
+          ) : (
+            <ToggleOffIcon color="disabled" style={{ fontSize: "45px" }} />
+          )}
         </Box>
       </Box>
     </>

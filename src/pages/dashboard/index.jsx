@@ -349,6 +349,7 @@ const Dashboard = () => {
                 </Button>
               </Box>
             </Box>
+            
             {devicesOnCurrentPage.map((device, index) => (
               <DeviceBox
                 key={`${device.id}-${index}`}
