@@ -124,7 +124,6 @@ const CreateDeviceModal = ({ open, onClose }) => {
         message={snackbarMessage}
         severity={snackbarSeverity}
         onClose={handleSnackbarClose}
-        sx={{ zIndex: 99999 }}
       />
     </>
   );

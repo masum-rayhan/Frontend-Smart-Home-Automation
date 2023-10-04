@@ -15,7 +15,12 @@ const CustomSnackbar = ({ open, message, severity, onClose }) => {
   }
 
   return (
-    <Snackbar open={open} autoHideDuration={1000} onClose={onClose}>
+    <Snackbar
+      open={open}
+      autoHideDuration={1000}
+      onClose={onClose}
+      sx={{ zIndex: 99999 }}
+    >
       <MuiAlert
         elevation={6}
         variant="filled"
