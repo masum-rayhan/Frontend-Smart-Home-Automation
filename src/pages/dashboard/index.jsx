@@ -399,21 +399,22 @@ const Dashboard = () => {
               </Box>
             </Box>
 
-            <Box
+            {/* <Box
               display="grid"
               gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))"
               borderBottom={`4px solid ${colors.primary[500]}`}
               color={colors.grey[100]}
               p="15px"
             >
-              {devicesOnCurrentPage.map((device, index) => (
-                <DeviceBox
-                  key={`${device.id}-${index}`}
-                  device={device}
-                  index={index}
-                />
-              ))}
-            </Box>
+              
+            </Box> */}
+            {devicesOnCurrentPage.map((device, index) => (
+              <DeviceBox
+                key={`${device.id}-${index}`}
+                device={device}
+                index={index}
+              />
+            ))}
           </Box>
           <Box>
             <Button sx={buttonStyle} onClick={handleOpenModal}>
