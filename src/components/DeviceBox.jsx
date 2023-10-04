@@ -41,8 +41,6 @@ const DeviceBox = ({ device, index }) => {
         p="15px"
       >
         <Box color={colors.greenAccent[500]} p="5px 10px" borderRadius="4px">
-          {/* <EmojiObjectsOutlinedIcon style={{ fontSize: "45px" }} />
-          <EmojiObjectsIcon style={{ fontSize: "45px" }} /> */}
           {deviceType === "outline" ? (
             <EmojiObjectsOutlinedIcon style={{ fontSize: "45px" }} />
           ) : (
@@ -59,8 +57,6 @@ const DeviceBox = ({ device, index }) => {
           borderRadius="4px"
           onClick={ handleToggle }
         >
-          {/* <ToggleOnIcon color="primary" style={{ fontSize: "45px" }} />
-          <ToggleOffIcon color="disabled" style={{ fontSize: "45px" }} /> */}
           {isDeviceOn ? (
             <ToggleOnIcon color="primary" style={{ fontSize: "45px" }} />
           ) : (
