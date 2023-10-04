@@ -37,6 +37,7 @@ const Dashboard = () => {
   const { data, isLoading } = useGetDevicesQuery();
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     if (!isLoading) {
@@ -68,12 +69,11 @@ const Dashboard = () => {
     transition: "background-color 0.3s",
     backgroundColor: `${colors.primary[400]}`, // Maintain color on hover
     "&:hover": {
-      backgroundColor: `${colors.blueAccent[700]}`, // Maintain color on hover
+      backgroundColor: `${colors.primary[300]}`, // Maintain color on hover
     },
   };
 
   const itemsPerPage = 5;
-  const [currentPage, setCurrentPage] = useState(1);
 
   const handleNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
@@ -378,24 +378,25 @@ const Dashboard = () => {
               >
                 Devices
               </Typography>
-              <div>
+              <Box>
                 <Button
                   variant="outlined"
-                  color="primary"
+                  color="inherit"
                   disabled={currentPage === 1}
                   onClick={handlePrevPage}
+                  sx={{ marginRight: 1 }}
                 >
                   Previous
                 </Button>
                 <Button
                   variant="outlined"
-                  color="primary"
+                  color="inherit"
                   disabled={endIndex >= data.result.length}
                   onClick={handleNextPage}
                 >
                   Next
                 </Button>
-              </div>
+              </Box>
             </Box>
 
             <Box
