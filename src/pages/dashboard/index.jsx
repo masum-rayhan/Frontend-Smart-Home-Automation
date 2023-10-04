@@ -314,55 +314,6 @@ const Dashboard = () => {
             overflow="auto"
             m="25px 0 0 0"
           >
-            {/* <Box
-              display="grid"
-              gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              color={colors.grey[100]}
-              p="15px"
-            >
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                borderBottom={`4px solid ${colors.primary[500]}`}
-                color={colors.grey[100]}
-                p="15px"
-              >
-                <Typography
-                  variant="h5"
-                  fontWeight="600"
-                  color={colors.grey[100]}
-                >
-                  Devices
-                </Typography>
-                <div>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    disabled={currentPage === 1}
-                    onClick={handlePrevPage}
-                  >
-                    Previous
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    disabled={endIndex >= data.result.length}
-                    onClick={handleNextPage}
-                  >
-                    Next
-                  </Button>
-                </div>
-              </Box>
-              {data.result.map((device, index) => (
-                <DeviceBox
-                  key={`${device.id}-${index}`}
-                  device={device}
-                  index={index}
-                />
-              ))}
-            </Box> */}
             <Box
               display="flex"
               justifyContent="space-between"
@@ -398,16 +349,6 @@ const Dashboard = () => {
                 </Button>
               </Box>
             </Box>
-
-            {/* <Box
-              display="grid"
-              gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              color={colors.grey[100]}
-              p="15px"
-            >
-              
-            </Box> */}
             {devicesOnCurrentPage.map((device, index) => (
               <DeviceBox
                 key={`${device.id}-${index}`}
