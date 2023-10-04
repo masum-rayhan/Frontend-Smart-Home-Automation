@@ -72,6 +72,24 @@ const Dashboard = () => {
     },
   };
 
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
+
+  // Calculate the start and end indices for the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  // Slice the data array to get devices for the current page
+  const devicesOnCurrentPage = data.result.slice(startIndex, endIndex);
+
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -296,6 +314,55 @@ const Dashboard = () => {
             overflow="auto"
             m="25px 0 0 0"
           >
+            {/* <Box
+              display="grid"
+              gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+              borderBottom={`4px solid ${colors.primary[500]}`}
+              color={colors.grey[100]}
+              p="15px"
+            >
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                borderBottom={`4px solid ${colors.primary[500]}`}
+                color={colors.grey[100]}
+                p="15px"
+              >
+                <Typography
+                  variant="h5"
+                  fontWeight="600"
+                  color={colors.grey[100]}
+                >
+                  Devices
+                </Typography>
+                <div>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    disabled={currentPage === 1}
+                    onClick={handlePrevPage}
+                  >
+                    Previous
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    disabled={endIndex >= data.result.length}
+                    onClick={handleNextPage}
+                  >
+                    Next
+                  </Button>
+                </div>
+              </Box>
+              {data.result.map((device, index) => (
+                <DeviceBox
+                  key={`${device.id}-${index}`}
+                  device={device}
+                  index={index}
+                />
+              ))}
+            </Box> */}
             <Box
               display="flex"
               justifyContent="space-between"
@@ -311,15 +378,41 @@ const Dashboard = () => {
               >
                 Devices
               </Typography>
+              <div>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  disabled={currentPage === 1}
+                  onClick={handlePrevPage}
+                >
+                  Previous
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  disabled={endIndex >= data.result.length}
+                  onClick={handleNextPage}
+                >
+                  Next
+                </Button>
+              </div>
             </Box>
-            {data.result.map((device, index) => (
-              <DeviceBox
-                key={`${device.id}-${index}`}
-                device={device}
-                index={index}
-                // handleToggle={handleToggle}
-              />
-            ))}
+
+            <Box
+              display="grid"
+              gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+              borderBottom={`4px solid ${colors.primary[500]}`}
+              color={colors.grey[100]}
+              p="15px"
+            >
+              {devicesOnCurrentPage.map((device, index) => (
+                <DeviceBox
+                  key={`${device.id}-${index}`}
+                  device={device}
+                  index={index}
+                />
+              ))}
+            </Box>
           </Box>
           <Box>
             <Button sx={buttonStyle} onClick={handleOpenModal}>
@@ -332,11 +425,6 @@ const Dashboard = () => {
                 Create Device
               </Typography>
             </Button>
-            {/* Create Device Modal */}
-            {/* <CreateDeviceModal
-              open={isModalOpen}
-              onClose={handleCloseModal}
-            /> */}
             <CreateDeviceModal open={isModalOpen} onClose={handleCloseModal} />
           </Box>
         </Grid>
