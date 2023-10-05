@@ -25,8 +25,20 @@ const deviceApi = createApi({
       }),
       invalidatesTags: ["Devices"],
     }),
+
+    deleteDevice: builder.mutation({
+      query: (id) => ({
+        url: `device/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Devices"],
+    }),
   }),
 });
 
-export const { useGetDevicesQuery,useCreateDeviceMutation } = deviceApi;
+export const {
+  useGetDevicesQuery,
+  useCreateDeviceMutation,
+  useDeleteDeviceMutation,
+} = deviceApi;
 export default deviceApi;

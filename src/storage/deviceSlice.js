@@ -14,8 +14,11 @@ export const deviceSlice = createSlice({
         addDevice: (state, action) => {
             state.device.push(action.payload);
         },
+        deleteDevice: (state, action) => {
+            state.device = state.device.filter((device) => device.id !== action.payload);
+        }
     },
 });
 
-export const { setDevice, addDevice } = deviceSlice.actions;
+export const { setDevice, addDevice, deleteDevice } = deviceSlice.actions;
 export const deviceReducer = deviceSlice.reducer;

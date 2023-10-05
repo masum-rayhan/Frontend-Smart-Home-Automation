@@ -14,6 +14,7 @@ import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import EmojiObjectsOutlinedIcon from "@mui/icons-material/EmojiObjectsOutlined";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useDeleteDeviceMutation } from "../apis/deviceApi";
 
 const DeviceBox = ({ device, index }) => {
   const theme = useTheme();
@@ -24,6 +25,8 @@ const DeviceBox = ({ device, index }) => {
   const [deviceType, setDeviceType] = useState("outline");
 
   const [isHovered, setIsHovered] = useState(false);
+
+  const [deleteDeviceMutation] = useDeleteDeviceMutation();
 
   // Toggle the device's status when the button is clicked
   const handleToggle = () => {
@@ -39,6 +42,18 @@ const DeviceBox = ({ device, index }) => {
 
   const handleMouseLeave = () => {
     setIsHovered(false);
+  };
+
+  const handleDelete = async () => {
+    try {
+      // Call the delete mutation with the device ID
+      await deleteDeviceMutation(device.id);
+
+      // Dispatch an action to remove the deleted device from the Redux store
+      dispatch(/* Your delete action here */);
+    } catch (error) {
+      console.error("Error deleting device:", error);
+    }
   };
 
   return (
@@ -58,7 +73,7 @@ const DeviceBox = ({ device, index }) => {
           {isHovered && (
             <IconButton
               color="error"
-              // onClick={() => onDelete(device.id)}
+              onClick={handleDelete} // onClick={() => onDelete(device.id)}
               style={{ visibility: isHovered ? "visible" : "hidden" }}
             >
               <DeleteIcon />
