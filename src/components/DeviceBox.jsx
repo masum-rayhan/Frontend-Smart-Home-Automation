@@ -50,7 +50,7 @@ const DeviceBox = ({ device, index }) => {
       await deleteDeviceMutation(device.id);
 
       // Dispatch an action to remove the deleted device from the Redux store
-      dispatch(/* Your delete action here */);
+      dispatch();
     } catch (error) {
       console.error("Error deleting device:", error);
     }
@@ -69,7 +69,6 @@ const DeviceBox = ({ device, index }) => {
         onMouseLeave={handleMouseLeave}
         style={{ position: "relative" }}
       >
-        {/* <Grid item xs={2}> */}
           {isHovered && (
             <IconButton
               color="error"

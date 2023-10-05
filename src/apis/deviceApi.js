@@ -33,6 +33,14 @@ const deviceApi = createApi({
       }),
       invalidatesTags: ["Devices"],
     }),
+
+    tagTypes: ["DeviceTypes"],
+    getDeviceTypes: builder.query({
+      query: () => ({
+        url: "device/device-types", // Endpoint to fetch device types
+      }),
+      providesTags: ["DeviceTypes"],
+    }),
   }),
 });
 
@@ -40,5 +48,6 @@ export const {
   useGetDevicesQuery,
   useCreateDeviceMutation,
   useDeleteDeviceMutation,
+  useGetDeviceTypesQuery
 } = deviceApi;
 export default deviceApi;

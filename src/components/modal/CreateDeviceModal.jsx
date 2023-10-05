@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -6,22 +6,34 @@ import {
   TextField,
   Button,
   IconButton,
-  colors, // Add IconButton from MUI
+  colors,
+  FormControl,
+  InputLabel, // Add IconButton from MUI
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close"; // Import CloseIcon
 import { tokens } from "../../theme";
 import { useTheme } from "@emotion/react";
-import { useCreateDeviceMutation } from "../../apis/deviceApi";
-import Snackbar from "../../components/global/Snackbar";
+import {
+  useCreateDeviceMutation,
+  useGetDeviceTypesQuery,
+  useGetDevicesQuery,
+} from "../../apis/deviceApi";
 import CustomSnackbar from "../../components/global/Snackbar";
+import { useDispatch, useSelector } from "react-redux";
+import Select from "react-select";
 
 const CreateDeviceModal = ({ open, onClose }) => {
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+
+  // Fetch device types data using the generated query hook
+  const { data: deviceTypesData, error } = useGetDeviceTypesQuery();
+
   const handleSnackbarOpen = (message, severity) => {
     setSnackbarMessage(message);
     setSnackbarSeverity(severity);
@@ -45,6 +57,7 @@ const CreateDeviceModal = ({ open, onClose }) => {
       deviceType: "",
       location: "",
     });
+    // setFormData({ ...formData, deviceType: null }); // Reset selected device type
   };
 
   const handleChange = (e) => {
@@ -57,21 +70,44 @@ const CreateDeviceModal = ({ open, onClose }) => {
     // Check if required fields are not empty
     if (!formData.name || !formData.deviceType || !formData.location) {
       const errorMessage = "Device Name and Device Type are required.";
-      handleSnackbarOpen(errorMessage, "error");      return;
+      handleSnackbarOpen(errorMessage, "error");
+      return;
     }
     try {
-      const response = await createDevice(formData); // Call the mutation with form data
+      const response = await createDevice({
+        name: formData.name,
+        deviceType: formData.deviceType.value,
+        location: formData.location,
+      }); // Call the mutation with form data
+
       if (!response.error) {
         handleSnackbarOpen("Device created successfully", "success");
         resetForm(); // Reset the form fields
         onClose(); // Close the modal
       } else {
         const errorMessage = `Error creating device: ${response.error}`;
-        handleSnackbarOpen(errorMessage, "error");      }
+        handleSnackbarOpen(errorMessage, "error");
+      }
     } catch (error) {
       const errorMessage = `Error creating device: ${error.message}`;
-      handleSnackbarOpen(errorMessage, "error");    }
+      handleSnackbarOpen(errorMessage, "error");
+    }
   };
+
+  useEffect(() => {
+    if (!isLoading && !error) {
+      // deviceTypesData contains the response data
+      console.log(deviceTypesData);
+    }
+  }, [deviceTypesData, isLoading, error]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <>
@@ -99,17 +135,39 @@ const CreateDeviceModal = ({ open, onClose }) => {
             margin="normal"
             value={formData.name}
             onChange={handleChange}
-            required 
+            required
           />
-          <TextField
+          <Select
             name="deviceType"
-            label="Device Type"
-            variant="outlined"
-            fullWidth
-            margin="normal"
+            options={deviceTypesData?.result.map((type) => ({
+              value: type.value,
+              label: type.displayName,
+            }))}
+            onChange={(selectedOption) => {
+              setFormData({ ...formData, deviceType: selectedOption });
+            }}
             value={formData.deviceType}
-            onChange={handleChange}
-            required 
+            placeholder="Select Device Type"
+            /** Apply custom styles to match the background color */
+            styles={{
+              control: (provided) => ({
+                ...provided,
+                backgroundColor: `${colors.primary[400]}`,
+              }),
+              singleValue: (provided) => ({
+                ...provided,
+                color: `${colors.grey[100]}`,
+              }),
+              option: (provided) => ({
+                ...provided,
+                backgroundColor: "white",
+                color: "black",
+              }),
+              input: (provided) => ({
+                ...provided,
+                color: "white"
+              }),
+            }}
           />
           <TextField
             name="location"
