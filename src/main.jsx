@@ -12,7 +12,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-      basename={import.meta.env.DEV ? '/' : '/Smart-Home-Automation/'}
         <CustomSnackbar />
         <App />
       </BrowserRouter>
