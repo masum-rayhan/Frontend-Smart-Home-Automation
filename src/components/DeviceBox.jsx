@@ -14,9 +14,12 @@ import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import EmojiObjectsOutlinedIcon from "@mui/icons-material/EmojiObjectsOutlined";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useDeleteDeviceMutation } from "../apis/deviceApi";
+import {
+  useDeleteDeviceMutation,
+  useUpdateDeviceMutation,
+} from "../apis/deviceApi";
 
-const DeviceBox = ({ device, index }) => {
+const DeviceBox = ({ device, index, data }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -27,13 +30,48 @@ const DeviceBox = ({ device, index }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const [deleteDeviceMutation] = useDeleteDeviceMutation();
+  const [updateDeviceMutation] = useUpdateDeviceMutation();
 
   // Toggle the device's status when the button is clicked
-  const handleToggle = () => {
-    setIsDeviceOn((prevIsDeviceOn) => !prevIsDeviceOn);
-    setDeviceType((prevDeviceType) =>
-      prevDeviceType === "outline" ? "filled" : "outline"
-    );
+  const handleToggle = async () => {
+    console.log("Toggle button clicked");
+    // setIsDeviceOn((prevIsDeviceOn) => !prevIsDeviceOn);
+    // setDeviceType((prevDeviceType) =>
+    //   prevDeviceType === "outline" ? "filled" : "outline"
+    // );
+    try {
+      // Find the device you want to update in the list
+      const updatedDevice = data.find((d) => d.id === device.id);
+      //setIsDeviceOn(updatedStatus);
+
+      if (updatedDevice) {
+        // Toggle the device's status
+        const updatedStatus = !isDeviceOn;
+
+        // Create an object with the updated status
+        const updatedDeviceData = {
+          ...updatedDevice,
+          deviceStates: [
+            {
+              ...updatedDevice.deviceStates[0],
+              state: updatedStatus,
+              value: updatedStatus ? "1" : "0",
+            },
+          ],
+        };
+
+        // Call the update mutation to update the device state
+        await updateDeviceMutation({
+          id: device.id,
+          deviceData: updatedDeviceData,
+        });
+
+        // Update the local state
+        setIsDeviceOn(updatedStatus);
+      }
+    } catch (error) {
+      console.error("Error toggling device:", error);
+    }
   };
 
   const handleMouseEnter = () => {
@@ -69,17 +107,22 @@ const DeviceBox = ({ device, index }) => {
         onMouseLeave={handleMouseLeave}
         style={{ position: "relative" }}
       >
-          {isHovered && (
-            <IconButton
-              color="error"
-              onClick={handleDelete} // onClick={() => onDelete(device.id)}
-              style={{ visibility: isHovered ? "visible" : "hidden" }}
-            >
-              <DeleteIcon />
-            </IconButton>
-          )}
+        {isHovered && (
+          <IconButton
+            color="error"
+            onClick={handleDelete} // onClick={() => onDelete(device.id)}
+            style={{ visibility: isHovered ? "visible" : "hidden" }}
+          >
+            <DeleteIcon />
+          </IconButton>
+        )}
         {/* </Grid> */}
-        <Grid item xs={2} sm={1} style={{ marginLeft: isHovered ? "10px" : "0" }}>
+        <Grid
+          item
+          xs={2}
+          sm={1}
+          style={{ marginLeft: isHovered ? "10px" : "0" }}
+        >
           <Box color={colors.greenAccent[500]} p="5px 10px" borderRadius="4px">
             {deviceType === "outline" ? (
               <EmojiObjectsOutlinedIcon style={{ fontSize: "45px" }} />
@@ -91,8 +134,8 @@ const DeviceBox = ({ device, index }) => {
 
         <Grid item xs={4} style={{ textAlign: "center" }}>
           {/* <Box> */}
-            {/* Render device information here */}
-            <Typography color={colors.grey[100]}>{device.name}</Typography>
+          {/* Render device information here */}
+          <Typography color={colors.grey[100]}>{device.name}</Typography>
           {/* </Box> */}
         </Grid>
 

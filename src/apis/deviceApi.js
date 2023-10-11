@@ -27,6 +27,18 @@ const deviceApi = createApi({
       invalidatesTags: ["Devices"],
     }),
 
+    updateDevice: builder.mutation({
+      query: ({id, deviceData}) => ({
+        url: `device/${id}`,
+        method: "PUT",
+        header: {
+          "Content-Type": "application/json",
+        },
+        body: deviceData,
+      }),
+      invalidatesTags: ["Devices"],
+    }),
+
     deleteDevice: builder.mutation({
       query: (id) => ({
         url: `device/${id}`,
@@ -48,6 +60,7 @@ const deviceApi = createApi({
 export const {
   useGetDevicesQuery,
   useCreateDeviceMutation,
+  useUpdateDeviceMutation,
   useDeleteDeviceMutation,
   useGetDeviceTypesQuery
 } = deviceApi;

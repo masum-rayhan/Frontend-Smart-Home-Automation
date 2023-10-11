@@ -14,6 +14,16 @@ export const deviceSlice = createSlice({
     addDevice: (state, action) => {
       state.device.push(action.payload);
     },
+    updateDevice: (state, action) => {
+      // Find the index of the device to be updated
+      const index = state.device.findIndex(
+        (device) => device.id === action.payload.id
+      );
+      if (index !== -1) {
+        // Update the device
+        state.device[index] = action.payload;
+      }
+    },
     deleteDevice: (state, action) => {
       state.device = state.device.filter(
         (device) => device.id !== action.payload
@@ -25,6 +35,6 @@ export const deviceSlice = createSlice({
   },
 });
 
-export const { setDevice, addDevice, deleteDevice, setDeviceTypes } =
+export const { setDevice, addDevice, updateDevice, deleteDevice, setDeviceTypes } =
   deviceSlice.actions;
 export const deviceReducer = deviceSlice.reducer;

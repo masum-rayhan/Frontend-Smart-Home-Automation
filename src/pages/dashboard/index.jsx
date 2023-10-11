@@ -355,6 +355,7 @@ const Dashboard = () => {
                 key={`${device.id}-${index}`}
                 device={device}
                 index={index}
+                data={data.result}
               />
             ))}
           </Box>
