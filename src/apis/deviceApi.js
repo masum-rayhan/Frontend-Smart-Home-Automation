@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_BASE_URL } from './apiConfig';
 
 const deviceApi = createApi({
   reducerPath: "deviceApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://homeeweb.azurewebsites.net/",
+    baseUrl: API_BASE_URL,
   }),
   tagTypes: ["Devices"],
   endpoints: (builder) => ({
