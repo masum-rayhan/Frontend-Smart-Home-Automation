@@ -14,64 +14,30 @@ import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import EmojiObjectsOutlinedIcon from "@mui/icons-material/EmojiObjectsOutlined";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  useDeleteDeviceMutation,
-  useUpdateDeviceMutation,
-} from "../apis/deviceApi";
+import { useDeleteDeviceMutation } from "../apis/deviceApi";
+import { useUpdateDeviceStateMutation } from "../apis/deviceStateApi";
+import { useDispatch } from "react-redux";
 
-const DeviceBox = ({ device, index, data }) => {
+const DeviceBox = ({ device, deviceState, index, data }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   // Initialize state for the device's on/off status
   const [isDeviceOn, setIsDeviceOn] = useState(false);
   const [deviceType, setDeviceType] = useState("outline");
-
   const [isHovered, setIsHovered] = useState(false);
 
   const [deleteDeviceMutation] = useDeleteDeviceMutation();
-  const [updateDeviceMutation] = useUpdateDeviceMutation();
+  const [updateDeviceStateMutation] = useUpdateDeviceStateMutation();
+  const dispatch = useDispatch();
 
   // Toggle the device's status when the button is clicked
   const handleToggle = async () => {
     console.log("Toggle button clicked");
-    // setIsDeviceOn((prevIsDeviceOn) => !prevIsDeviceOn);
-    // setDeviceType((prevDeviceType) =>
-    //   prevDeviceType === "outline" ? "filled" : "outline"
-    // );
-    try {
-      // Find the device you want to update in the list
-      const updatedDevice = data.find((d) => d.id === device.id);
-      //setIsDeviceOn(updatedStatus);
-
-      if (updatedDevice) {
-        // Toggle the device's status
-        const updatedStatus = !isDeviceOn;
-
-        // Create an object with the updated status
-        const updatedDeviceData = {
-          ...updatedDevice,
-          deviceStates: [
-            {
-              ...updatedDevice.deviceStates[0],
-              state: updatedStatus,
-              value: updatedStatus ? "1" : "0",
-            },
-          ],
-        };
-
-        // Call the update mutation to update the device state
-        await updateDeviceMutation({
-          id: device.id,
-          deviceData: updatedDeviceData,
-        });
-
-        // Update the local state
-        setIsDeviceOn(updatedStatus);
-      }
-    } catch (error) {
-      console.error("Error toggling device:", error);
-    }
+    setIsDeviceOn((prevIsDeviceOn) => !prevIsDeviceOn);
+    setDeviceType((prevDeviceType) =>
+      prevDeviceType === "outline" ? "filled" : "outline"
+    );
   };
 
   const handleMouseEnter = () => {

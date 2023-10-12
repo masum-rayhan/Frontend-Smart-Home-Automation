@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import deviceApi from "../apis/deviceApi";
 import { deviceReducer } from "./deviceSlice";
 import { deviceStateReducer } from "./deviceStateSlice";
+import deviceStateApi from "../apis/deviceStateApi";
 
 const store = configureStore({
   reducer: {

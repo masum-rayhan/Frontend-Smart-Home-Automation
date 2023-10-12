@@ -29,6 +29,7 @@ import StateBox from "../../components/StateBox";
 import DeviceBox from "../../components/DeviceBox";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import CreateDeviceModal from "../../components/modal/CreateDeviceModal";
+import { updateDeviceState } from "../../storage/deviceStateSlice";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -42,6 +43,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (!isLoading) {
       dispatch(setDevice(data.result));
+      dispatch(updateDeviceState(data.result));
     }
   }, [isLoading]);
 
@@ -349,11 +351,12 @@ const Dashboard = () => {
                 </Button>
               </Box>
             </Box>
-            
-            {devicesOnCurrentPage.map((device, index) => (
+
+            {devicesOnCurrentPage.map((device, deviceState, index) => (
               <DeviceBox
                 key={`${device.id}-${index}`}
                 device={device}
+                deviceState={deviceState}
                 index={index}
                 data={data.result}
               />
