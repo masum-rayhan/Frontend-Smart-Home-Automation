@@ -7,7 +7,7 @@ import {
   useMediaQuery,
   Grid,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { tokens } from "../theme";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
@@ -31,6 +31,15 @@ const DeviceBox = ({ device, index, data }) => {
   const [deleteDeviceMutation] = useDeleteDeviceMutation();
   const [updateDeviceStateMutation] = useUpdateDeviceStateMutation();
   const dispatch = useDispatch();
+
+  // Initialize the switch state based on the device state from the database
+  useEffect(() => {
+    if (device.deviceStates && device.deviceStates.length > 0) {
+      const deviceState = device.deviceStates[0];
+      setIsDeviceOn(deviceState.state === true);
+      setDeviceType(deviceState.state === true ? "filled" : "outline");
+    }
+  }, [device]);
 
   // Toggle the device's status when the button is clicked
   const handleToggle = async () => {
