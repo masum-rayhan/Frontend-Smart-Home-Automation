@@ -69,7 +69,7 @@ const DeviceBox = ({ device, index, data }) => {
         deviceStateData: deviceStateUpdateDTO,
       });
 
-      // Update the device state in your Redux store
+      // Update the device state in Redux store
       dispatch(updateDeviceState(updatedDeviceState));
 
       // Update the local state based on the mutation result
@@ -115,7 +115,7 @@ const DeviceBox = ({ device, index, data }) => {
         {isHovered && (
           <IconButton
             color="error"
-            onClick={handleDelete} // onClick={() => onDelete(device.id)}
+            onClick={handleDelete}
             style={{ visibility: isHovered ? "visible" : "hidden" }}
           >
             <DeleteIcon />
