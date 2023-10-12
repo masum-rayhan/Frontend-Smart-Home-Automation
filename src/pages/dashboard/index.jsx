@@ -352,11 +352,10 @@ const Dashboard = () => {
               </Box>
             </Box>
 
-            {devicesOnCurrentPage.map((device, deviceState, index) => (
+            {devicesOnCurrentPage.map((device, index) => (
               <DeviceBox
                 key={`${device.id}-${index}`}
                 device={device}
-                deviceState={deviceState}
                 index={index}
                 data={data.result}
               />

@@ -13,7 +13,7 @@ const deviceStateApi = createApi({
       query: ({id, deviceStateData}) => ({
         url: `device-state/${id}`,
         method: "PUT",
-        header: {
+        headers: {
           "Content-Type": "application/json",
         },
         body: deviceStateData,

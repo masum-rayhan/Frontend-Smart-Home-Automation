@@ -97,7 +97,7 @@ const CreateDeviceModal = ({ open, onClose }) => {
   useEffect(() => {
     if (!isLoading && !error) {
       // deviceTypesData contains the response data
-      console.log(deviceTypesData);
+      // console.log(deviceTypesData);
     }
   }, [deviceTypesData, isLoading, error]);
 

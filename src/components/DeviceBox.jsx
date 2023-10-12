@@ -17,8 +17,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useDeleteDeviceMutation } from "../apis/deviceApi";
 import { useUpdateDeviceStateMutation } from "../apis/deviceStateApi";
 import { useDispatch } from "react-redux";
+import { updateDeviceState } from "../storage/deviceStateSlice";
 
-const DeviceBox = ({ device, deviceState, index, data }) => {
+const DeviceBox = ({ device, index, data }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -38,6 +39,35 @@ const DeviceBox = ({ device, deviceState, index, data }) => {
     setDeviceType((prevDeviceType) =>
       prevDeviceType === "outline" ? "filled" : "outline"
     );
+    // Toggle the state
+    const newState = !isDeviceOn;
+
+    // Set the new value
+    const newValue = newState ? "1" : "0";
+
+    const deviceStateId = device.deviceStates[0].id;
+    const existingStateType = device.deviceStates[0].stateType;
+
+    const deviceStateUpdateDTO = {
+      id: deviceStateId,
+      stateType: existingStateType,
+      state: newState,
+      value: newValue,
+    };
+    try {
+      const updatedDeviceState = await updateDeviceStateMutation({
+        id: deviceStateId,
+        deviceStateData: deviceStateUpdateDTO,
+      });
+
+      // Update the device state in your Redux store
+      dispatch(updateDeviceState(updatedDeviceState));
+
+      // Update the local state based on the mutation result
+      setIsDeviceOn(newState);
+    } catch (error) {
+      console.error("Error updating device state:", error);
+    }
   };
 
   const handleMouseEnter = () => {
